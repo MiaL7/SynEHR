@@ -1,0 +1,19 @@
+name: synehr
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip>=23.0
+  - pip:
+      - torch>=2.2.0
+      - transformers>=4.40.0
+      - peft>=0.10.0
+      - datasets>=2.19.0
+      - accelerate>=0.27.0
+      - numpy>=1.26.0
+      - tqdm>=4.66.0
+      - sentencepiece>=0.1.99
+      - safetensors>=0.4.0
+      - huggingface-hub>=0.20.0
+      - tokenizers>=0.15.0
