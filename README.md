@@ -1,12 +1,29 @@
-# Anonymous Submission Repository
+# [CIKM 2026] SynEHR: Joint Modeling Inter-visit Temporal Evolution and Intra-visit Clinical Structure for Longitudinal EHR Synthesis
 
-![Framework](assets/framework.png)
+<p align="center">
+  <a href="https://arxiv.org/abs/2608.21673">Paper</a> |
+  <a href="https://doi.org/10.1145/3799682.3840734">DOI</a> |
+  <a href="https://cikm2026.diag.uniroma1.it/">CIKM 2026</a>
+</p>
 
-This repository contains the code, configuration, and training scripts for an anonymous submission on longitudinal EHR synthesis. The implementation follows a three-stage pipeline:
+**Authors:** Ximiao Li, Lin Jiang, Rongchao Xu, Dahai Yu, Zhe He, and Guang Wang
 
-1. Stage 1 trains a LoRA-adapted autoregressive generator for next-visit prediction.
-2. Stage 2 trains a temporal state and confidence module on step-wise patient trajectories.
-3. Stage 3 trains a relation adapter that injects structured temporal and relational signals back into the generator.
+## News
+
+- **September 2026:** 📰 The SynEHR preprint became available on [arXiv](https://arxiv.org/abs/2608.21673).
+- **August 2026:** 🎉 SynEHR was accepted to the 35th ACM International Conference on Information and Knowledge Management (CIKM 2026).
+
+## Overview
+
+SynEHR is a lightweight adaptive LLM framework for longitudinal electronic health record (EHR) synthesis. It jointly models irregular temporal evolution across visits and structured clinical relationships within each visit to generate patient trajectories that are more temporally faithful and clinically coherent.
+
+The framework uses a three-stage pipeline:
+
+1. **Base generator:** train a LoRA-adapted autoregressive language model for next-visit prediction.
+2. **Temporal State Conditioning Module (TSCM):** learn temporal states and confidence signals from step-wise patient trajectories.
+3. **Temporal-Relational Adaptation Module (TRAM):** combine temporal states with patient history and inject patient-specific relational representations into the generator.
+
+![SynEHR framework](assets/framework.png)
 
 ## Repository Layout
 
@@ -34,38 +51,26 @@ SynEHR/
         └── adapter_utils.py
 ```
 
-## Environment
+## Installation
 
-Create the environment with:
+Create the environment with Conda:
 
 ```bash
 conda env create -f environment.yml
 conda activate synehr
 ```
 
-The codebase depends on `torch`, `transformers`, `peft`, `datasets`, `accelerate`, and standard scientific Python packages listed in `environment.yml`.
+Alternatively, install the Python dependencies with pip:
+
+```bash
+pip install -r requirements.txt
+```
+
+The codebase depends on `torch`, `transformers`, `peft`, `datasets`, `accelerate`, and the scientific Python packages listed in `environment.yml` and `requirements.txt`.
 
 ## Data
 
-Two data forms are used by the training and inference scripts.
-
-1. `dataset-dir`
-
-   A locally preprocessed dataset directory stored in Hugging Face Datasets format and loadable with `datasets.load_from_disk(...)`. This is used by:
-
-   - `scripts/train_stage1_base.py`
-   - `scripts/generate.py`
-
-2. `train.jsonl` and `test.jsonl`
-
-   Step-wise raw trajectory files used by:
-
-   - `scripts/train_stage2_tscm.py`
-   - `scripts/train_stage3_tram.py`
-
-In addition, Stage 2, Stage 3, and adapter-based generation require a directory containing `code_vocabs.json`.
-
-See [`data/README.md`](data/README.md) for expected data formats and external access notes.
+This repository does not redistribute restricted source EHR data. Please follow the instructions in **[data/README.md](data/README.md)** for official MIMIC-III and MIMIC-IV access, expected local data formats, and required preprocessing artifacts.
 
 ## Training
 
@@ -176,3 +181,18 @@ Optional generation controls include:
 - Access to the selected backbone model must be available in the local runtime environment.
 - The repository does not redistribute any restricted clinical data.
 - All paths above are placeholders and should be replaced with local paths in your environment.
+
+## Citation
+
+If you find SynEHR useful in your research, please cite our paper:
+
+```bibtex
+@inproceedings{li2026synehr,
+  title     = {{SynEHR}: Joint Modeling Inter-visit Temporal Evolution and Intra-visit Clinical Structure for Longitudinal {EHR} Synthesis},
+  author    = {Li, Ximiao and Jiang, Lin and Xu, Rongchao and Yu, Dahai and He, Zhe and Wang, Guang},
+  booktitle = {Proceedings of the 35th ACM International Conference on Information and Knowledge Management},
+  year      = {2026},
+  doi       = {10.1145/3799682.3840734},
+  url       = {https://doi.org/10.1145/3799682.3840734}
+}
+```
